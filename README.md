@@ -15,6 +15,28 @@ A Flickr gallery app for With.
 
 The Flickr docs were a bit strange to navigate at first. I created a set of API credentials and noticed a secret was included. Obviously I don't want to include that in my React client, but it took a bit of digging to confirm my suspicion that only the key would be required for client-side API usage. Glad I don't have to create a backend to proxy the API.
 
+Flickr's API also has some... interesting aspects to it. Worried me at first that I'd have to parse XML, but I did find the `format=json` parameter. What was curious is that they seem to wrap their JSON in some kind of 'callback' syntax which makes the response invalid JSON by default, unless you pass another parameter to remove that.
+
+With at least the ability to fetch JSON sorted out, though, I opted for a standard fetch to interact with the API to keep things simple (had it been XML only, for instance, I might have considered utilizing a community-built SDK if it was available - XML can be tricky to parse correctly on the client since structures like arrays are often left up to inference).
+
+#### Redux, and async actions
+
+I ended up utilizing Redux as a state store here, although the app is still small. It's convenient to share the search information between different components, and it allows me to centralize the logic which triggers the API search effect when the search term changes.
+
+For async behavior, I opted for thunk actions. They're tried and true, and pretty simple to use. I've also used redux-saga in the past, which is an excellent way to model complex side-effects in a testable pattern. It's more suited to larger-scale apps, though, and the team has to be ok with generators.
+
+#### Wrapping up the first hour
+
+At this point, I had a basic (if ugly) starting point with a React app which can filter Flickr images based on a search term.
+
+Todo:
+
+1. Pagination
+2. Arranging items in a responsive grid
+3. Polishing the experience
+4. Lightboxing of individual items?
+5. More?
+
 ## Development / Setup
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
