@@ -1,10 +1,29 @@
 import * as React from 'react';
-import { Box, TextField, IconButton } from '@material-ui/core';
+import { Box, TextField, makeStyles, Button } from '@material-ui/core';
 import { SearchTwoTone } from '@material-ui/icons';
+import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSearchFilter, searchAsync } from './photosSlice';
 
-export function Search() {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(2),
+    borderRadius: theme.shape.borderRadius,
+  },
+  searchButton: {
+    flex: '0 0 auto',
+    margin: 'auto',
+    marginLeft: theme.spacing(2),
+  },
+}));
+
+export function Search({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const classes = useStyles();
+
   // separation of Redux state and local state -
   // Redux is used to manage the committed value which powers the search filter.
   // Local state stores the ephemeral value which the user may be in the process
@@ -31,17 +50,27 @@ export function Search() {
       component="form"
       display="flex"
       flexDirection="row"
+      alignContent="center"
       onSubmit={handleSubmit}
-      width="100%"
+      className={clsx(classes.root, className)}
+      {...props}
     >
       <TextField
         value={value}
         onChange={(ev) => setValue(ev.target.value)}
         label="Search photos"
+        variant="filled"
+        fullWidth
       />
-      <IconButton type="submit">
-        <SearchTwoTone />
-      </IconButton>
+      <Button
+        type="submit"
+        color="primary"
+        variant="contained"
+        startIcon={<SearchTwoTone />}
+        className={classes.searchButton}
+      >
+        Search
+      </Button>
     </Box>
   );
 }
