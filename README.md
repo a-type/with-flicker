@@ -11,15 +11,24 @@ A Flickr gallery app for With.
 5. For pagination, I implemented a simple visibility trigger component. When the component comes into view, it triggers the loading of the next page of photos. It's placed at the bottom of the grid. Pretty bog-standard infinite loading.
 6. For the grid itself, CSS Grid serves me well. It's easy to make responsive using media queries.
 
+## Things to check out
+
+1. I tried to ensure the app has keyboard accessibility
+2. In addition to the basic requirements, I thought a lightbox feature to showcase a particular photo was a useful addition to any 'photo gallery' functionality
+3. I took a stab at best practices for loading states, delaying the use of a loading spinner until a certain time has passed. This helps minimize user perception of loading time. You can see the spinner show up if you modify network throttling in the devtools.
+4. The app also handles request errors - although in an admittedly very barebones manner. Still, I believe the error experience is a first-class flow which deserves consideration at any scale.
+
 ## Where I would go next
 
 If I were developing the app further, I'd look into the stuff below.
 
 1. Virtualizing the grid. This is probably the biggest impact item, especially with the infinite loading. Virtualizing would remove images from the DOM as they move out of view, reducing the load on the browser's rendering as more and more images are loaded from the API.
-2. Tuning image source sizes responsively. Flickr allows for specifying a source image size. I utilized this to limit the size of the thumbnails to reduce the overhead of loading all the images at once, but on smaller devices it could be even further reduced.
-3. Fixing some aspect ratio issues. On certain screen shapes and with certain photo aspect ratios, the lightbox doesn't quite scale the dimensions correctly. Part of the reason this is difficult is that I don't have any access to photo dimension data via the API. I've worked with other APIs where photos include aspect ratio in the payload which makes this far more trivial to implement. If I were working on or with the team implementing the API, I'd suggest adding this feature. Otherwise, there are client-side ways to measure aspect ratio which aren't too bad, just a bit of a pain.
-4. Improving the transition from search to results. I think it would be nice to include more animation in this step.
-5. Debounced automatic search on type. This is trivial to do, but it wasn't high on my priority list.
+2. Testing. In an app of this scale I'd lean heavily on unit tests (using React Testing Library), with maybe one Cypress browser test for the integration of the whole flow. I'm pretty experienced with these tools, but didn't bring them in for this project as I wanted to focus on the explicit requirements, and I was confident in my ability to implement them using simple manual testing at this scale.
+3. Tuning image source sizes responsively. Flickr allows for specifying a source image size. I utilized this to limit the size of the thumbnails to reduce the overhead of loading all the images at once, but on smaller devices it could be even further reduced.
+4. Fixing some aspect ratio issues. On certain screen shapes and with certain photo aspect ratios, the lightbox doesn't quite scale the dimensions correctly. Part of the reason this is difficult is that I don't have any access to photo dimension data via the API. I've worked with other APIs where photos include aspect ratio in the payload which makes this far more trivial to implement. If I were working on or with the team implementing the API, I'd suggest adding this feature. Otherwise, there are client-side ways to measure aspect ratio which aren't too bad, just a bit of a pain.
+5. Improving the transition from search to results. I think it would be nice to include more animation in this step.
+6. Debounced automatic search on type. This is trivial to do, but it wasn't high on my priority list.
+7. A better error state that provides actionable next steps for the user.
 
 ## Development / Setup
 
