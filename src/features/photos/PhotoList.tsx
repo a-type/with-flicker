@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectPhotos,
   selectFetching,
   selectHasNextPage,
   nextPageAsync,
