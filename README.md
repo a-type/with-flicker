@@ -22,13 +22,13 @@ A Flickr gallery app for With.
 
 If I were developing the app further, I'd look into the stuff below.
 
-1. Virtualizing the grid. This is probably the biggest impact item, especially with the infinite loading. Virtualizing would remove images from the DOM as they move out of view, reducing the load on the browser's rendering as more and more images are loaded from the API.
-2. Testing. In an app of this scale I'd lean heavily on unit tests (using React Testing Library), with maybe one Cypress browser test for the integration of the whole flow. I'm pretty experienced with these tools, but didn't bring them in for this project as I wanted to focus on the explicit requirements, and I was confident in my ability to implement them using simple manual testing at this scale.
+1. Virtualizing the grid. This is probably the biggest impact item, especially with the infinite loading. Virtualizing would remove images from the DOM as they move out of view, reducing the load on the browser's rendering as more and more images are loaded from the API. I'd pull in a community library for this, like [react-virtualized](https://bvaughn.github.io/react-virtualized/#/components/List).
+2. Testing. In an app of this scale I'd lean heavily on unit tests (using [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)), with maybe one [Cypress](https://cypress.io) browser test for the integration of the whole flow. I'm pretty experienced with these tools, but didn't bring them in for this project as I wanted to focus on the explicit requirements, and I was confident in my ability to implement them using simple manual testing at this scale.
 3. Tuning image source sizes responsively. Flickr allows for specifying a source image size. I utilized this to limit the size of the thumbnails to reduce the overhead of loading all the images at once, but on smaller devices it could be even further reduced.
 4. Fixing some aspect ratio issues. On certain screen shapes and with certain photo aspect ratios, the lightbox doesn't quite scale the dimensions correctly. Part of the reason this is difficult is that I don't have any access to photo dimension data via the API. I've worked with other APIs where photos include aspect ratio in the payload which makes this far more trivial to implement. If I were working on or with the team implementing the API, I'd suggest adding this feature. Otherwise, there are client-side ways to measure aspect ratio which aren't too bad, just a bit of a pain.
 5. Improving the transition from search to results. I think it would be nice to include more animation in this step.
 6. Debounced automatic search on type. This is trivial to do, but it wasn't high on my priority list.
-7. A better error state that provides actionable next steps for the user.
+7. A better error state that provides actionable next steps for the user - like a button to retry the search.
 
 ## Development / Setup
 
