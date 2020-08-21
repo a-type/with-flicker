@@ -31,7 +31,12 @@ export function Lightbox({ className }: LightboxProps) {
   }, [dispatch]);
 
   return (
-    <Dialog open={!!focusedPhoto} onClose={onClose} className={className}>
+    <Dialog
+      open={!!focusedPhoto}
+      onClose={onClose}
+      className={className}
+      maxWidth={false}
+    >
       {!!focusedPhoto && (
         <Photo photo={focusedPhoto} className={classes.photo} />
       )}
