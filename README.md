@@ -17,8 +17,9 @@ If I were developing the app further, I'd look into the stuff below.
 
 1. Virtualizing the grid. This is probably the biggest impact item, especially with the infinite loading. Virtualizing would remove images from the DOM as they move out of view, reducing the load on the browser's rendering as more and more images are loaded from the API.
 2. Tuning image source sizes responsively. Flickr allows for specifying a source image size. I utilized this to limit the size of the thumbnails to reduce the overhead of loading all the images at once, but on smaller devices it could be even further reduced.
-3. Improving the transition from search to results. I think it would be nice to include more animation in this step.
-4. Debounced automatic search on type. This is trivial to do, but it wasn't high on my priority list.
+3. Fixing some aspect ratio issues. On certain screen shapes and with certain photo aspect ratios, the lightbox doesn't quite scale the dimensions correctly. Part of the reason this is difficult is that I don't have any access to photo dimension data via the API. I've worked with other APIs where photos include aspect ratio in the payload which makes this far more trivial to implement. If I were working on or with the team implementing the API, I'd suggest adding this feature. Otherwise, there are client-side ways to measure aspect ratio which aren't too bad, just a bit of a pain.
+4. Improving the transition from search to results. I think it would be nice to include more animation in this step.
+5. Debounced automatic search on type. This is trivial to do, but it wasn't high on my priority list.
 
 ## Development / Setup
 
