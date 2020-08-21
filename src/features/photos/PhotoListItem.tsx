@@ -12,7 +12,11 @@ export type PhotoListItemProps = {
 };
 
 const useStyles = makeStyles(() => ({
-  root: {},
+  root: {
+    '&:focus': {
+      transform: 'scale(1.1)',
+    },
+  },
   photo: {
     width: '100%',
     height: '100%',
