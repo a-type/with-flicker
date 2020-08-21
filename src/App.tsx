@@ -1,10 +1,14 @@
 import React from 'react';
 import { Search } from './features/photos/Search';
-import { Container, makeStyles } from '@material-ui/core';
+import { Container, makeStyles, Box, Typography } from '@material-ui/core';
 import { PhotoList } from './features/photos/PhotoList';
 import { Lightbox } from './features/photos/Lightbox';
 import { useSelector } from 'react-redux';
-import { selectPhotos, selectIsInitial } from './features/photos/photosSlice';
+import {
+  selectPhotos,
+  selectIsInitial,
+  selectError,
+} from './features/photos/photosSlice';
 import { EmptyState } from './components/EmptyState';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +43,7 @@ function App() {
 
   const photos = useSelector(selectPhotos);
   const initial = useSelector(selectIsInitial);
+  const error = useSelector(selectError);
 
   return (
     <Container maxWidth="lg" className={classes.root}>
@@ -48,6 +53,11 @@ function App() {
       ) : initial ? (
         <EmptyState />
       ) : null}
+      {error && (
+        <Box p={4}>
+          <Typography color="error">{error}</Typography>
+        </Box>
+      )}
       <Lightbox />
     </Container>
   );

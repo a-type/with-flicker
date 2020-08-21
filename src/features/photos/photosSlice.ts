@@ -12,6 +12,7 @@ interface SearchState {
     pageCount: number;
   };
   focusedPhotoId: string | null;
+  error: string | null;
 }
 
 const initialState: SearchState = {
@@ -27,6 +28,7 @@ const initialState: SearchState = {
   // after the first search, then never changed again. Helps track whether
   // we're in a completely initial state or not.
   initial: true,
+  error: null,
 };
 
 export const searchSlice = createSlice({
@@ -49,6 +51,7 @@ export const searchSlice = createSlice({
       };
       state.fetching = true;
       state.initial = false;
+      state.error = null;
     },
     completeSearch: (
       state,
@@ -67,12 +70,17 @@ export const searchSlice = createSlice({
     },
     beginPageFetch: (state) => {
       state.fetching = true;
+      state.error = null;
     },
     focusPhoto: (state, action: PayloadAction<{ id: string }>) => {
       state.focusedPhotoId = action.payload.id;
     },
     closeFocusedPhoto: (state) => {
       state.focusedPhotoId = null;
+    },
+    fetchFailed: (state, action: PayloadAction<{ error: string }>) => {
+      state.error = action.payload.error;
+      state.fetching = false;
     },
   },
 });
@@ -85,15 +93,23 @@ export const searchAsync = ({ value }: { value: string }): AppThunk => async (
   // immediately update stored filter value
   dispatch(searchSlice.actions.beginSearch({ value }));
 
-  const response = await searchPhotos({ text: value });
+  try {
+    const response = await searchPhotos({ text: value });
 
-  dispatch(
-    searchSlice.actions.completeSearch({
-      page: response.page,
-      pageCount: response.pages,
-      photos: response.photo,
-    }),
-  );
+    dispatch(
+      searchSlice.actions.completeSearch({
+        page: response.page,
+        pageCount: response.pages,
+        photos: response.photo,
+      }),
+    );
+  } catch (err) {
+    dispatch(
+      searchSlice.actions.fetchFailed({
+        error: "Couldn't load the images - try again?",
+      }),
+    );
+  }
 };
 
 export const nextPageAsync = (): AppThunk => async (dispatch, getState) => {
@@ -101,18 +117,27 @@ export const nextPageAsync = (): AppThunk => async (dispatch, getState) => {
 
   const currentFilter = selectSearchFilter(getState());
   const currentPage = selectLatestPage(getState());
-  const response = await searchPhotos({
-    text: currentFilter,
-    page: currentPage + 1,
-  });
 
-  dispatch(
-    searchSlice.actions.completeSearch({
-      page: response.page,
-      pageCount: response.pages,
-      photos: response.photo,
-    }),
-  );
+  try {
+    const response = await searchPhotos({
+      text: currentFilter,
+      page: currentPage + 1,
+    });
+
+    dispatch(
+      searchSlice.actions.completeSearch({
+        page: response.page,
+        pageCount: response.pages,
+        photos: response.photo,
+      }),
+    );
+  } catch (err) {
+    dispatch(
+      searchSlice.actions.fetchFailed({
+        error: "Couldn't load the images - try again?",
+      }),
+    );
+  }
 };
 
 export const { focusPhoto, closeFocusedPhoto } = searchSlice.actions;
@@ -139,5 +164,7 @@ export const selectFocusedPhoto = (state: RootState) => {
 };
 
 export const selectIsInitial = (state: RootState) => state.photos.initial;
+
+export const selectError = (state: RootState) => state.photos.error;
 
 export default searchSlice.reducer;
