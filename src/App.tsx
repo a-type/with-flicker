@@ -18,10 +18,13 @@ const useStyles = makeStyles((theme) => ({
    */
   search: {
     alignSelf: 'center',
-    width: '50vw',
     position: 'sticky',
     top: theme.spacing(2),
     zIndex: theme.zIndex.appBar,
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '50vw',
+    },
   },
   list: {
     marginTop: theme.spacing(4),
