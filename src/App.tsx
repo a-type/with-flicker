@@ -3,6 +3,9 @@ import { Search } from './features/photos/Search';
 import { Container, makeStyles } from '@material-ui/core';
 import { PhotoList } from './features/photos/PhotoList';
 import { Lightbox } from './features/photos/Lightbox';
+import { useSelector } from 'react-redux';
+import { selectPhotos } from './features/photos/photosSlice';
+import { EmptyState } from './components/EmptyState';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,10 +37,16 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
 
+  const photos = useSelector(selectPhotos);
+
   return (
     <Container maxWidth="lg" className={classes.root}>
       <Search className={classes.search} />
-      <PhotoList className={classes.list} />
+      {photos.length ? (
+        <PhotoList className={classes.list} photos={photos} />
+      ) : (
+        <EmptyState />
+      )}
       <Lightbox />
     </Container>
   );

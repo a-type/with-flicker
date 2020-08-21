@@ -1,16 +1,19 @@
 import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { motion } from 'framer-motion';
 import {
   selectPhotos,
   selectFetching,
   selectHasNextPage,
   nextPageAsync,
 } from './photosSlice';
-import { CircularProgress, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { PhotoListItem } from './PhotoListItem';
 import { VisibilityTrigger } from '../../components/VisibilityTrigger';
+import { Spinner } from './Spinner';
+import { PhotoData } from '../../services/flickr';
+
+export type PhotoListProps = { className?: string; photos: PhotoData[] };
 
 // Material UI's built-in JSS styling
 const useStyles = makeStyles((theme) => ({
@@ -67,10 +70,9 @@ const useStyles = makeStyles((theme) => ({
  * Renders the results of a photo search in a grid. Items can be clicked
  * to open the lightbox.
  */
-export function PhotoList({ className, ...props }: { className?: string }) {
+export function PhotoList({ className, photos, ...props }: PhotoListProps) {
   const classes = useStyles();
 
-  const photos = useSelector(selectPhotos);
   const fetching = useSelector(selectFetching);
   const hasNextPage = useSelector(selectHasNextPage);
 
@@ -90,27 +92,7 @@ export function PhotoList({ className, ...props }: { className?: string }) {
         ))}
       </div>
       {/* Loading spinner for fetching state */}
-      {/*
-        delay showing the spinner for 2 seconds - if the content loads
-        faster, we never show a spinner, which makes the user feel like
-        the loading was faster.
-
-        React Suspense is also a great solution for this, but I opted
-        for a Redux-based async lifecycle and haven't really worked
-        out whether Suspense has a good compatibility story with Redux in
-        general. I'm used to working with GraphQL clients, though,
-        which largely support Suspense for data fetching even though
-        it's not 'official' yet.
-      */}
-      {fetching && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 80 }}
-          transition={{ delay: 2 }}
-        >
-          <CircularProgress />
-        </motion.div>
-      )}
+      {fetching && <Spinner />}
       {/* Only show more if there's more to show */}
       {!fetching && hasNextPage && (
         <VisibilityTrigger onVisible={fetchNextPage} />

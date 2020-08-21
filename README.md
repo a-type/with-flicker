@@ -13,13 +13,12 @@ A Flickr gallery app for With.
 
 ## Where I would go next
 
-If I were developing the app further, I'd look into:
+If I were developing the app further, I'd look into the stuff below.
 
 1. Virtualizing the grid. This is probably the biggest impact item, especially with the infinite loading. Virtualizing would remove images from the DOM as they move out of view, reducing the load on the browser's rendering as more and more images are loaded from the API.
 2. Tuning image source sizes responsively. Flickr allows for specifying a source image size. I utilized this to limit the size of the thumbnails to reduce the overhead of loading all the images at once, but on smaller devices it could be even further reduced.
 3. Improving the transition from search to results. I think it would be nice to include more animation in this step.
 4. Debounced automatic search on type. This is trivial to do, but it wasn't high on my priority list.
-5. Empty state - always a nice to have. Provide the user with a hint on where to get started.
 
 ## Development / Setup
 
