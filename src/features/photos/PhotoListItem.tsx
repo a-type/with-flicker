@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: `inset 0 0 0 0 ${theme.palette.secondary.main}`,
       transition: theme.transitions.create('box-shadow'),
       borderRadius: theme.shape.borderRadius,
+      // don't block hover event on image
+      pointerEvents: 'none',
     },
     '&:focus': {
       '&::before': {
