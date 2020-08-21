@@ -4,7 +4,7 @@ import { Container, makeStyles } from '@material-ui/core';
 import { PhotoList } from './features/photos/PhotoList';
 import { Lightbox } from './features/photos/Lightbox';
 import { useSelector } from 'react-redux';
-import { selectPhotos } from './features/photos/photosSlice';
+import { selectPhotos, selectIsInitial } from './features/photos/photosSlice';
 import { EmptyState } from './components/EmptyState';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,15 +38,16 @@ function App() {
   const classes = useStyles();
 
   const photos = useSelector(selectPhotos);
+  const initial = useSelector(selectIsInitial);
 
   return (
     <Container maxWidth="lg" className={classes.root}>
       <Search className={classes.search} />
       {photos.length ? (
         <PhotoList className={classes.list} photos={photos} />
-      ) : (
+      ) : initial ? (
         <EmptyState />
-      )}
+      ) : null}
       <Lightbox />
     </Container>
   );

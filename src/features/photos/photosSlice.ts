@@ -3,6 +3,7 @@ import { RootState, AppThunk } from '../../app/store';
 import { searchPhotos, PhotoData } from '../../services/flickr';
 
 interface SearchState {
+  initial: boolean;
   filter: string;
   fetching: boolean;
   results: {
@@ -22,6 +23,10 @@ const initialState: SearchState = {
     pageCount: 0,
   },
   focusedPhotoId: null,
+  // it's a slight hack - but this starts true and is set to false
+  // after the first search, then never changed again. Helps track whether
+  // we're in a completely initial state or not.
+  initial: true,
 };
 
 export const searchSlice = createSlice({
@@ -43,6 +48,7 @@ export const searchSlice = createSlice({
         pageCount: 0,
       };
       state.fetching = true;
+      state.initial = false;
     },
     completeSearch: (
       state,
@@ -131,5 +137,7 @@ export const selectFocusedPhoto = (state: RootState) => {
   const id = state.photos.focusedPhotoId;
   return state.photos.results.photos.find((photo) => photo.id === id) ?? null;
 };
+
+export const selectIsInitial = (state: RootState) => state.photos.initial;
 
 export default searchSlice.reducer;
