@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "https://a-type.github.io/with-flickr/static/css/main.3a4a7bca.chunk.css",
+    "main.js": "https://a-type.github.io/with-flickr/static/js/main.e890cb77.chunk.js",
+    "main.js.map": "https://a-type.github.io/with-flickr/static/js/main.e890cb77.chunk.js.map",
+    "runtime-main.js": "https://a-type.github.io/with-flickr/static/js/runtime-main.59071358.js",
+    "runtime-main.js.map": "https://a-type.github.io/with-flickr/static/js/runtime-main.59071358.js.map",
+    "static/js/2.981e7826.chunk.js": "https://a-type.github.io/with-flickr/static/js/2.981e7826.chunk.js",
+    "static/js/2.981e7826.chunk.js.map": "https://a-type.github.io/with-flickr/static/js/2.981e7826.chunk.js.map",
+    "index.html": "https://a-type.github.io/with-flickr/index.html",
+    "precache-manifest.741604879874707ebb0f8a1234cbe3f5.js": "https://a-type.github.io/with-flickr/precache-manifest.741604879874707ebb0f8a1234cbe3f5.js",
+    "service-worker.js": "https://a-type.github.io/with-flickr/service-worker.js",
+    "static/css/main.3a4a7bca.chunk.css.map": "https://a-type.github.io/with-flickr/static/css/main.3a4a7bca.chunk.css.map",
+    "static/js/2.981e7826.chunk.js.LICENSE.txt": "https://a-type.github.io/with-flickr/static/js/2.981e7826.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.59071358.js",
+    "static/js/2.981e7826.chunk.js",
+    "static/css/main.3a4a7bca.chunk.css",
+    "static/js/main.e890cb77.chunk.js"
+  ]
+}
