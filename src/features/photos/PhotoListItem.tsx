@@ -11,10 +11,26 @@ export type PhotoListItemProps = {
   className?: string;
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
+    position: 'relative',
+    // creates a focus ring effect
+    '&::before': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      content: '""',
+      zIndex: 1,
+      boxShadow: `inset 0 0 0 0 ${theme.palette.secondary.main}`,
+      transition: theme.transitions.create('box-shadow'),
+      borderRadius: theme.shape.borderRadius,
+    },
     '&:focus': {
-      transform: 'scale(1.1)',
+      '&::before': {
+        boxShadow: `inset 0 0 0 6px ${theme.palette.secondary.main}`,
+      },
     },
   },
   photo: {
