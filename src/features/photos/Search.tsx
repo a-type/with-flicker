@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Box, TextField, makeStyles, Button } from '@material-ui/core';
+import {
+  Box,
+  TextField,
+  makeStyles,
+  Button,
+  useMediaQuery,
+  Theme,
+} from '@material-ui/core';
 import { SearchTwoTone } from '@material-ui/icons';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,6 +22,13 @@ const useStyles = makeStyles((theme) => ({
     flex: '0 0 auto',
     margin: 'auto',
     marginLeft: theme.spacing(2),
+    minWidth: '0',
+  },
+  startIcon: {
+    [theme.breakpoints.down('sm')]: {
+      marginRight: 0,
+      marginLeft: 0,
+    },
   },
 }));
 
@@ -47,6 +61,8 @@ export function Search({
     [value, dispatch],
   );
 
+  const isSmall = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+
   return (
     <Box
       component="form"
@@ -70,8 +86,10 @@ export function Search({
         variant="contained"
         startIcon={<SearchTwoTone />}
         className={classes.searchButton}
+        classes={{ startIcon: classes.startIcon }}
+        aria-label={isSmall ? 'Search' : undefined}
       >
-        Search
+        {isSmall ? null : 'Search'}
       </Button>
     </Box>
   );
