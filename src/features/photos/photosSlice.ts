@@ -112,6 +112,8 @@ export const searchAsync = ({ value }: { value: string }): AppThunk => async (
   }
 };
 
+// this could use some improvement - plenty of duplicated logic here
+// and above.
 export const nextPageAsync = (): AppThunk => async (dispatch, getState) => {
   dispatch(searchSlice.actions.beginPageFetch());
 
