@@ -2,63 +2,24 @@
 
 A Flickr gallery app for With.
 
-## Devlog
+## Design decisions
 
-### Day 1 (initial bootstrapping, problem exploration)
+1. Went with a fairly straightforward Redux approach, using redux-toolkit and async actions, as provided by the community Redux+Typescript CRA template. They're not flashy, but they're practical and easy to understand, which is valuable.
+2. Material UI is my baseline component library which I use in most projects. It provides sane defaults, some nice microinteractions, and deep but simple customization.
+3. I experimented with several ways to handle the loading of photos into the grid. I initially attempted to animate their appearance in a staggered fashion using framer-motion, but this was simply not performant. Instead I scaled back to a simple pop-in, adding a slight background color to the items so they act as their own loading skeletons while the images are fetched.
+4. I also chose to display a loading spinner, but delay its appearance by 2 seconds. Showing a spinner immediately increases the user's perception of loading time. This roughly approximates the principle behind a more robust solution like React Suspense. You can see this behavior if you throttle the network in the devtools.
+5. For pagination, I implemented a simple visibility trigger component. When the component comes into view, it triggers the loading of the next page of photos. It's placed at the bottom of the grid. Pretty bog-standard infinite loading.
+6. For the grid itself, CSS Grid serves me well. It's easy to make responsive using media queries.
 
-#### Initial setup (5min)
+## Where I would go next
 
-- Bootstrapped with create-react-app and the Redux+Typescript template (just in case Redux is useful here, helps to skip the boilerplate)
-- Pulling in Material-UI as a baseline component library (my goto)
+If I were developing the app further, I'd look into:
 
-#### Connecting to Flickr (30min)
-
-The Flickr docs were a bit strange to navigate at first. I created a set of API credentials and noticed a secret was included. Obviously I don't want to include that in my React client, but it took a bit of digging to confirm my suspicion that only the key would be required for client-side API usage. Glad I don't have to create a backend to proxy the API.
-
-Flickr's API also has some... interesting aspects to it. Worried me at first that I'd have to parse XML, but I did find the `format=json` parameter. What was curious is that they seem to wrap their JSON in some kind of 'callback' syntax which makes the response invalid JSON by default, unless you pass another parameter to remove that.
-
-With at least the ability to fetch JSON sorted out, though, I opted for a standard fetch to interact with the API to keep things simple (had it been XML only, for instance, I might have considered utilizing a community-built SDK if it was available - XML can be tricky to parse correctly on the client since structures like arrays are often left up to inference).
-
-#### Redux, and async actions (20min)
-
-I ended up utilizing Redux as a state store here, although the app is still small. It's convenient to share the search information between different components, and it allows me to centralize the logic which triggers the API search effect when the search term changes.
-
-For async behavior, I opted for thunk actions. They're tried and true, and pretty simple to use. I've also used redux-saga in the past, which is an excellent way to model complex side-effects in a testable pattern. It's more suited to larger-scale apps, though, and the team has to be ok with generators.
-
-My code is very similar to the Redux template boilerplate. I'm ok with that. Thunks and bog-standard Redux may not be flashy, they may not even be my first choice of tools, but they're ubiquitous, simple, and they get the job done. These qualities are very valuable both for scaling the codebase and team size later on.
-
-#### Wrapping up the first hour
-
-At this point, I had a basic (if ugly) starting point with a React app which can filter Flickr images based on a search term.
-
-Todo:
-
-1. Pagination
-2. Arranging items in a responsive grid
-3. Polishing the experience
-4. Lightboxing of individual items?
-5. More?
-
-### Day 2 (feature completion)
-
-#### Rounding out functionality (1h)
-
-Having spent an hour with the codebase initially just building a foundation of interacting with the Flickr API, my focus for the next hour or so was filling out the remaining baseline features - namely pagination and the grid layout.
-
-Pagination is relatively trivial. For a simple initial pass I opted to include a 'Show more' button at the bottom of the photo list which fetches the next page of data from the API and appends it to the current result set. This button only appears if there is a next page to show - since the API is kind enough to provide a total page count. The final detail is to ensure the result set is reset upon a new search, so we don't just keep appending.
-
-As for the grid - CSS grid makes it pretty trivial. I opted for a set of breakpoint-based cell sizes which seemed effective when I tested through the browser's responsive design tools.
-
-#### Polish!
-
-I gotta admit I just want an excuse to do some animation. I had the chance to play around just a little bit with Framer Motion a while back, and I thought this would be a great time to dive back in. It's just a delightfully simple and powerful library with a few little features that I think give it an edge over the incumbent `react-spring`.
-
-My visual goals for the app:
-
-1. Create a nice transition from search to results and delay the current loading state to only appear if it takes a while. Using animation to convey loading is a better experience than a spinner.
-2. Stagger the animation of grid children into the grid as they're loaded
-3. Have some fun with subtle interactivity
-4. Find a nice color palette
+1. Virtualizing the grid. This is probably the biggest impact item, especially with the infinite loading. Virtualizing would remove images from the DOM as they move out of view, reducing the load on the browser's rendering as more and more images are loaded from the API.
+2. Tuning image source sizes responsively. Flickr allows for specifying a source image size. I utilized this to limit the size of the thumbnails to reduce the overhead of loading all the images at once, but on smaller devices it could be even further reduced.
+3. Improving the transition from search to results. I think it would be nice to include more animation in this step.
+4. Debounced automatic search on type. This is trivial to do, but it wasn't high on my priority list.
+5. Empty state - always a nice to have. Provide the user with a hint on where to get started.
 
 ## Development / Setup
 

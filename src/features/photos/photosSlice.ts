@@ -10,6 +10,7 @@ interface SearchState {
     latestPage: number;
     pageCount: number;
   };
+  focusedPhotoId: string | null;
 }
 
 const initialState: SearchState = {
@@ -20,6 +21,7 @@ const initialState: SearchState = {
     latestPage: 0,
     pageCount: 0,
   },
+  focusedPhotoId: null,
 };
 
 export const searchSlice = createSlice({
@@ -60,8 +62,16 @@ export const searchSlice = createSlice({
     beginPageFetch: (state) => {
       state.fetching = true;
     },
+    focusPhoto: (state, action: PayloadAction<{ id: string }>) => {
+      state.focusedPhotoId = action.payload.id;
+    },
+    closeFocusedPhoto: (state) => {
+      state.focusedPhotoId = null;
+    },
   },
 });
+
+// public actions
 
 export const searchAsync = ({ value }: { value: string }): AppThunk => async (
   dispatch,
@@ -99,13 +109,27 @@ export const nextPageAsync = (): AppThunk => async (dispatch, getState) => {
   );
 };
 
+export const { focusPhoto, closeFocusedPhoto } = searchSlice.actions;
+
+// selectors
+
 export const selectSearchFilter = (state: RootState) => state.photos.filter;
+
 export const selectPhotos = (state: RootState) =>
   state.photos.results.photos ?? [];
+
 export const selectLatestPage = (state: RootState) =>
   state.photos.results.latestPage;
+
 export const selectHasNextPage = (state: RootState) =>
   state.photos.results.latestPage < state.photos.results.pageCount;
+
 export const selectFetching = (state: RootState) => state.photos.fetching;
+
+// memoizing this would be a good improvement.
+export const selectFocusedPhoto = (state: RootState) => {
+  const id = state.photos.focusedPhotoId;
+  return state.photos.results.photos.find((photo) => photo.id === id) ?? null;
+};
 
 export default searchSlice.reducer;

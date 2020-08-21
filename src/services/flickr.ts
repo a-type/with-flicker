@@ -24,7 +24,7 @@ export async function searchPhotos({
   // call Flickr API to fetch image data - gotta say, their response is a little odd.
   // nojsoncallback is required to actually return... valid JSON.
   const response = await fetch(
-    `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${process.env.REACT_APP_FLICKR_API_KEY}&text=${text}&page=${page}&format=json&nojsoncallback=1&safe_search=1`,
+    `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${process.env.REACT_APP_FLICKR_API_KEY}&text=${text}&page=${page}&per_page=50&format=json&nojsoncallback=1&safe_search=1`,
   );
 
   if (!response.ok) {

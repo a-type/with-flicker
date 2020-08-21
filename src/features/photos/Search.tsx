@@ -36,6 +36,8 @@ export function Search({
     (ev: React.FormEvent) => {
       ev.preventDefault();
 
+      if (!value.length) return;
+
       dispatch(
         searchAsync({
           value,

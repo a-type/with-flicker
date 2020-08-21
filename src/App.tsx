@@ -2,6 +2,7 @@ import React from 'react';
 import { Search } from './features/photos/Search';
 import { Container, makeStyles } from '@material-ui/core';
 import { PhotoList } from './features/photos/PhotoList';
+import { Lightbox } from './features/photos/Lightbox';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +35,7 @@ function App() {
     <Container maxWidth="lg" className={classes.root}>
       <Search className={classes.search} />
       <PhotoList className={classes.list} />
+      <Lightbox />
     </Container>
   );
 }
